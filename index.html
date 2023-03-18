@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Traffic Overview</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #F5F5F5;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            font-style: normal;
+        }
+        .top-bar {
+            position: absolute;
+            width: 100%;
+            height: 70px;
+            left: 0px;
+            top: 0px;
+
+            box-shadow: inset 0px -1px 0px #E2E2EA;
+        }
+
+        .side-bar {
+            position: absolute;
+            left: 0%;
+            right: 0%;
+            width: 250px;
+            height: 100%;
+            min-width: 160px;
+
+            color: #171725;
+            box-shadow: inset -1px 0px 0px #E2E2EA;
+        }
+
+        .primary-color {
+            background: #FFFFFF;
+        }
+
+        .logo-header {
+            position: absolute;
+            left: 2%;
+            top: 24%;
+        }
+
+        .menu-icon {
+            position: absolute;
+            left: 20px;
+            top: 14px;
+        }
+
+        .menu {
+            position: absolute;
+            top: 120px;
+        }
+
+        .menu-item {
+            position: absolute;
+            height: 52px;
+            width: 250px;
+            top: 0px;
+        }
+
+        .menu-second {
+            position: absolute;
+            top: 54px;
+        }
+
+        .menu-third {
+            position: absolute;
+            top: 108px;
+        }
+        
+        .menu-item-text {
+            position: absolute;
+            left: 60px;
+            top: 16px;
+
+            
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 21px;
+            letter-spacing: 0.1px;
+            
+        }
+
+        .menu-selected {
+            color: #0062FF !important;
+        }
+
+        .menu-selected > svg path{
+            fill: #0062FF;
+        }
+
+        .content {
+            position: absolute;
+            top: 110px;
+            left: 290px;
+            height: 85%;
+            width: 83%;
+        }
+
+        .card {
+            width: 408.67px;
+            height: 122px;
+
+            background: #FFFFFF;
+            border: 1px solid #E2E2EA;
+            border-radius: 20px;
+        }
+
+        .content-traffic {
+            display: block;
+        }
+
+        .content-overview {
+            display: none;
+        }
+
+        .content-csv {
+            display: none;
+        }
+        
+        .menu-selector {
+            position: absolute;
+            top: 10px;
+        }
+
+        .filters {
+            display: flex;
+        }
+
+        .filter-button {
+            position: absolute;
+            top: 20px;
+            right: 0px;
+            background-color: #FFFFFF;
+            align-content: center;
+            height: 36px;
+            width: 110px;
+        }
+
+        #filter-btn-text {
+            position: absolute;
+            top: 5px;
+            left: 35px;
+        }
+
+        #filter-dropdown-tick {
+            position: absolute;
+            top: 15px;
+            right: 10px;
+        }
+
+        #filter-icon {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        }
+
+        #search-input {
+            background-color: #FFFFFF;
+            height: 30px;
+            padding: 10px;
+            padding-left: 50px;
+            width: 500px;
+            
+            border: 2px solid white;
+            border-radius: 5px;
+        }
+
+        .main-section {
+            position: absolute;
+            border-radius: 20px;
+            background-color: #FFFFFF;
+            width: 100%;
+            height: 100%;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+        }
+
+        table, th, td {
+            border-bottom: 1px #F1F1F5 solid;
+        }
+
+        thead {
+            background-color: #FAFAFA;
+        }
+
+    </style>
+
+    <script>
+        function rethink_selection(id) {
+            var old_el = document.querySelectorAll(".menu-selected")[0];
+            old_el.classList.remove("menu-selected");
+
+            var new_el = document.querySelectorAll(".menu-item")[id];
+            new_el.classList.add("menu-selected");
+
+            var selector = document.querySelectorAll(".menu-selector")[0];
+            selector.style.top = id * 52 + 10
+        }
+
+        function change_content(id) {
+            var contents = document.querySelectorAll(".content")[0].children;
+            
+            for (let i = 0; i < contents.length; i++) {
+                if (id !== i){
+                    try {
+                        contents[i].style.display = "none";
+                    } catch (error) {console.log(error)}
+                }
+            }
+            contents[id].style.display = "block"
+        }
+
+        function show_content(id) {
+            rethink_selection(id)
+            change_content(id)
+        }
+
+        function show_content_1(e) {
+            show_content(0)
+        }
+
+        function show_content_2(e) {
+            show_content(1)
+        }
+
+        function show_content_3(e) {
+            show_content(2)
+        }
+    </script>
+</head>
+<body>
+    <div class="primary-color side-bar">
+        <div class="menu">
+            <svg class="menu-selector" width="3" height="32" viewBox="0 0 3 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0C1.65685 0 3 1.34315 3 3V29C3 30.6569 1.65685 32 0 32V0Z" fill="#0062FF"/>
+            </svg>
+            <div class="menu-item  menu-first menu-selected" onclick="show_content_1()">
+                <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.3 13.7V10.3H4V13.7H8.3ZM10.3 13.7H20V10.3H10.3V13.7ZM8.3 4H5C4.44772 4 4 4.44772 4 5V8.3H8.3V4ZM10.3 4V8.3H20V5C20 4.44772 19.5523 4 19 4H10.3ZM8.3 20V15.7H4V19C4 19.5523 4.44772 20 5 20H8.3ZM10.3 20H19C19.5523 20 20 19.5523 20 19V15.7H10.3V20ZM2 19V5C2 3.34315 3.34315 2 5 2H19C20.6569 2 22 3.34315 22 5V19C22 20.6569 20.6569 22 19 22H5C3.34315 22 2 20.6569 2 19Z" fill="#92929D"/>
+                </svg>
+
+                <div class="menu-item-text">Traffic</div>
+            </div>
+            <div class="menu-item menu-second" onclick="show_content_2()"> 
+                <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7 12H6C3.79086 12 2 13.7909 2 16V18C2 20.2091 3.79086 22 6 22H7C9.20914 22 11 20.2091 11 18V16C11 13.7909 9.20914 12 7 12ZM4 16C4 14.8954 4.89543 14 6 14H7C8.10457 14 9 14.8954 9 16V18C9 19.1046 8.10457 20 7 20H6C4.89543 20 4 19.1046 4 18V16Z" fill="#92929D"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9 5.5C9 3.567 7.433 2 5.5 2C3.567 2 2 3.567 2 5.5V6.5C2 8.433 3.567 10 5.5 10C7.433 10 9 8.433 9 6.5V5.5ZM4 5.5C4 4.67157 4.67157 4 5.5 4C6.32843 4 7 4.67157 7 5.5V6.5C7 7.32843 6.32843 8 5.5 8C4.67157 8 4 7.32843 4 6.5V5.5Z" fill="#92929D"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M18 11H17C14.7909 11 13 12.7909 13 15V18C13 20.2091 14.7909 22 17 22H18C20.2091 22 22 20.2091 22 18V15C22 12.7909 20.2091 11 18 11ZM15 15C15 13.8954 15.8954 13 17 13H18C19.1046 13 20 13.8954 20 15V18C20 19.1046 19.1046 20 18 20H17C15.8954 20 15 19.1046 15 18V15Z" fill="#92929D"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M18.5 2H14.5C12.567 2 11 3.567 11 5.5C11 7.433 12.567 9 14.5 9H18.5C20.433 9 22 7.433 22 5.5C22 3.567 20.433 2 18.5 2ZM13 5.5C13 4.67157 13.6716 4 14.5 4H18.5C19.3284 4 20 4.67157 20 5.5C20 6.32843 19.3284 7 18.5 7H14.5C13.6716 7 13 6.32843 13 5.5Z" fill="#92929D"/>
+                </svg>
+                    
+                <div class="menu-item-text">Overview</div>
+            </div>
+            <div class="menu-item menu-third" onclick="show_content_3()"> 
+                <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20 16V4H8V16H20ZM20 18H5C4.44772 18 4 18.4477 4 19C4 19.5523 4.44772 20 5 20H20V18ZM22 20C22 21.1046 21.1046 22 20 22H5C3.34315 22 2 20.6569 2 19V4C2 2.89543 2.89543 2 4 2H20C21.1046 2 22 2.89543 22 4V20ZM4 16.1707C4.31278 16.0602 4.64936 16 5 16H6V4H4V16.1707ZM11.4874 10.5123C10.9351 10.5123 10.4874 10.0646 10.4874 9.51227C10.4874 8.95998 10.9351 8.51227 11.4874 8.51227H14.4874C15.0397 8.51227 15.4874 8.95998 15.4874 9.51227C15.4874 10.0646 15.0397 10.5123 14.4874 10.5123H11.4874ZM11.4874 13.5123C10.9351 13.5123 10.4874 13.0646 10.4874 12.5123C10.4874 11.96 10.9351 11.5123 11.4874 11.5123H16.4874C17.0397 11.5123 17.4874 11.96 17.4874 12.5123C17.4874 13.0646 17.0397 13.5123 16.4874 13.5123H11.4874Z" fill="#92929D"/>
+                </svg>
+                    
+                    
+                <div class="menu-item-text">CSV</div>
+            </div>
+        </div>
+    </div>
+    <div class="primary-color top-bar">
+        <svg class="logo-header" width="71" height="37" viewBox="0 0 71 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_7_1972)">
+            <path d="M17.0456 10.9119C18.3422 10.9047 19.4752 11.0822 20.5142 11.6596C21.4245 12.1671 22.1729 12.888 22.8481 13.686C23.7549 14.7602 24.7765 15.7052 25.9931 16.3669C26.7101 16.756 27.542 16.9138 28.3531 16.9892C29.9647 17.138 31.5432 16.8941 32.9216 16.0029C34.3296 15.0919 35.4452 13.8564 36.0857 12.2263C36.4529 11.292 37.0481 9.94351 37.3388 9.49699C37.6294 9.05047 39.5717 5.96251 41.1973 4.5853C43.3032 2.80102 45.5831 1.37539 48.2268 0.66168C50.5189 0.0430112 52.8528 -0.179351 55.2232 0.155986C56.1248 0.283306 57.0228 0.428559 57.8878 0.692165C59.442 1.162 60.9109 1.83446 62.3102 2.70777C63.9601 3.73709 65.3629 5.03719 66.6368 6.4951C67.6846 7.69299 68.5182 9.05585 69.1761 10.5263C69.5433 11.3476 69.9175 12.1653 70.1542 13.0422C70.7164 15.1206 71.1323 17.2277 70.9635 19.3921C70.8869 20.364 70.7686 21.3414 70.5684 22.3097C70.3282 23.4735 69.9836 24.5889 69.5416 25.6828C68.4538 28.3745 66.83 30.6662 64.6528 32.524C63.9601 33.1158 63.257 33.704 62.4929 34.2061C61.5079 34.8535 60.4619 35.3771 59.3758 35.8146C58.222 36.2791 57.0402 36.6718 55.808 36.8153C54.5462 36.9623 53.274 37.0574 52 36.9641C50.465 36.8529 48.9508 36.6162 47.4906 36.0926C46.4011 35.7017 45.3534 35.23 44.3283 34.6705C43.4076 34.1684 42.5983 33.539 41.7751 32.906C40.5603 31.9699 39.5665 30.8276 38.6284 29.6046C37.4919 28.1252 36.8462 26.3893 36.0596 24.727C35.3251 23.1723 34.3279 21.8865 32.8207 21.0867C31.2526 20.2565 29.5853 19.8637 27.8205 20.0843C26.4473 20.2565 25.2725 20.9182 24.2387 21.8327C23.7236 22.2882 23.2763 22.8172 22.8777 23.3964C22.2007 24.3827 21.1947 24.9296 20.1609 25.4515C18.6973 26.1903 17.1744 26.323 15.6185 25.9912C13.8415 25.6129 12.3465 24.6607 11.2692 23.1687C10.5991 22.2416 10.0109 21.162 9.87513 20.0108C9.6541 18.1315 9.71153 16.2665 10.8132 14.5665C11.5842 13.3776 12.4892 12.3608 13.7127 11.7332C14.7813 11.1862 15.9387 10.8186 17.0474 10.9083L17.0456 10.9119ZM52.9868 30.5353C59.4072 30.6913 64.799 24.9512 64.6771 18.5045C64.5449 11.5341 59.616 6.69236 53.1922 6.48434C49.9637 6.38033 47.0973 7.57105 44.7964 9.93275C42.0553 12.7463 40.9762 16.2539 41.4183 20.156C41.7229 22.8405 42.9203 25.2219 44.8208 27.1084C47.0781 29.3464 49.8053 30.5533 52.9868 30.5353Z" fill="#0062FF"/>
+            <path d="M0.0314442 18.3631C-0.0346913 16.3439 0.316871 14.47 0.912091 12.6391C1.40985 11.113 2.17563 9.72686 2.99884 8.364C3.65498 7.2755 4.37551 6.2408 5.28922 5.37645C6.88692 3.86475 8.58208 2.51444 10.641 1.6734C11.5582 1.29862 12.4719 0.936381 13.4117 0.629736C13.7232 0.527521 14.0383 0.556213 14.3481 0.47731C15.6377 0.149147 16.9517 -0.0516965 18.2744 0.0307927C19.987 0.140181 21.7048 0.301573 23.3407 0.89155C25.2604 1.58195 27.1279 2.41401 28.736 3.7195C29.7263 4.52287 30.6157 5.45356 31.5067 6.38246C32.1785 7.08541 32.5875 7.94079 33.1393 8.70651C33.4873 9.18889 33.4334 9.37001 32.9356 9.64796C31.4528 10.4764 29.9769 11.3175 28.5655 12.2733C28.1042 12.5853 28.1286 12.5476 27.838 12.0832C27.4011 11.3856 26.8773 10.7508 26.3308 10.1393C25.2134 8.89121 23.8611 7.97845 22.34 7.36337C21.2888 6.93837 20.1906 6.69987 19.0524 6.54565C17.7488 6.36991 16.4975 6.56717 15.2478 6.7698C14.4664 6.89712 13.7076 7.25757 12.9749 7.61801C10.8933 8.64374 9.19644 10.1268 8.01644 12.1728C7.5065 13.0569 7.03311 14.002 6.75813 14.9847C6.29692 16.638 6.15594 18.3362 6.38916 20.0793C6.75987 22.8695 8.01992 25.1398 9.88216 27.1375C10.7541 28.0717 11.7722 28.7352 12.8809 29.3127C13.9617 29.8758 15.079 30.3133 16.2695 30.4962C17.0683 30.6182 17.888 30.5679 18.6973 30.5124C19.5902 30.4514 20.4813 30.342 21.3254 30.0102C22.2861 29.6319 23.2764 29.3485 24.1466 28.7137C24.9959 28.0933 25.8574 27.5069 26.5675 26.7125C27.02 26.205 27.4237 25.6706 27.7353 25.0573C27.9946 24.548 28.0955 24.5193 28.5602 24.7973C29.9456 25.6293 31.331 26.4614 32.7094 27.306C33.5082 27.7938 33.4664 27.783 32.9826 28.6241C32.2255 29.9403 31.2979 31.1221 30.1666 32.085C28.4593 33.5411 26.6789 34.9004 24.5434 35.6751C23.3825 36.0965 22.2286 36.5 21.0121 36.7241C19.0733 37.0792 17.1414 37.0362 15.2026 36.7726C14.0191 36.6112 12.8461 36.3368 11.7618 35.8616C10.7106 35.4025 9.68723 34.852 8.67084 34.2925C7.06966 33.412 5.85485 32.0904 4.60698 30.8047C3.83772 30.012 3.2512 29.0527 2.66468 28.1004C1.69876 26.5349 0.932976 24.8672 0.536163 23.0758C0.189821 21.5121 -0.088644 19.9089 0.0366654 18.3577L0.0314442 18.3631Z" fill="#004FCD"/>
+            <path d="M60.4078 18.5475C60.4322 22.6594 56.9688 26.1329 53.0128 26.1472C49.0726 26.1616 45.5517 22.7222 45.6161 18.4937C45.6805 14.3208 48.8428 10.8975 53.0302 10.9047C56.9984 10.9118 60.4635 14.2814 60.4078 18.5475Z" fill="#0062FF"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_7_1972">
+            <rect width="71" height="37" fill="white"/>
+            </clipPath>
+            </defs>
+        </svg>
+    </div>
+    
+    <div class="content">
+        <div class="content-traffic">
+            <div class="filters">
+                <h2>
+                    Routes list
+                </h2>
+                <div class="filter-button">
+                    <svg id="filter-icon" width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.831812 3.84339C-0.0414245 2.54891 0.90505 0.833344 2.45418 0.833344L11.546 0.833344C13.0951 0.833344 14.0416 2.54891 13.1683 3.84339C13.1628 3.8516 13.157 3.85964 13.151 3.8675L9.34598 8.84301C9.08862 9.22948 8.95174 9.68148 8.95174 10.1432V12.5133C8.95174 12.8381 8.82114 13.1483 8.59061 13.3761L7.13893 14.8108C6.37461 15.5661 5.0484 15.0433 5.0484 13.9479V10.1432C5.0484 9.68148 4.91151 9.22948 4.65415 8.84301L0.849145 3.8675C0.84313 3.85964 0.837349 3.85159 0.831812 3.84339ZM1.65344 3.27304L5.45795 8.2479C5.46397 8.25577 5.46975 8.26381 5.47528 8.27202C5.84874 8.82563 6.0484 9.47672 6.0484 10.1432V13.9479C6.0484 14.1307 6.28583 14.2479 6.43601 14.0995L7.88769 12.6649C7.9294 12.6237 7.95174 12.569 7.95174 12.5133V10.1432C7.95174 9.47672 8.1514 8.82563 8.52485 8.27202C8.53039 8.26381 8.53617 8.25577 8.54218 8.2479L12.3467 3.27304C12.7471 2.66175 12.3111 1.83334 11.546 1.83334L2.45418 1.83334C1.68907 1.83334 1.25305 2.66176 1.65344 3.27304Z" fill="#28303F"/>
+                    </svg>
+                        
+                    <div id="filter-btn-text">Filter</div>
+
+                    <svg id="filter-dropdown-tick" width="8" height="4" viewBox="0 0 8 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.276271 0.354327C0.448776 0.138696 0.763422 0.103736 0.979053 0.27624L4.00004 2.69303L7.02102 0.27624C7.23666 0.103736 7.5513 0.138696 7.72381 0.354327C7.89631 0.569958 7.86135 0.884605 7.64572 1.05711L4.31239 3.72378C4.12978 3.86986 3.8703 3.86986 3.68769 3.72378L0.354358 1.05711C0.138727 0.884605 0.103766 0.569958 0.276271 0.354327Z" fill="#28303F"/>
+                    </svg>
+                        
+                </div>
+            </div>
+            <div class="main-section">
+                <svg class="search-icon" width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.90238 2.40241C-0.0786247 5.38341 -0.0786247 10.2166 2.90238 13.1976C5.88338 16.1786 10.7165 16.1786 13.6975 13.1976C16.6785 10.2166 16.6785 5.38341 13.6975 2.40241C10.7165 -0.578594 5.88338 -0.578594 2.90238 2.40241ZM4.08089 3.58092C6.41102 1.25079 10.1889 1.25079 12.519 3.58092C14.8492 5.91105 14.8492 9.68893 12.519 12.0191C10.1889 14.3492 6.41102 14.3492 4.08089 12.0191C1.75076 9.68893 1.75076 5.91105 4.08089 3.58092Z" fill="#92929D"/>
+                    <path d="M17.4119 15.4021L13.9707 11.9608C13.185 11.1752 12.0065 12.3537 12.7922 13.1393L16.2334 16.5806C17.0191 17.3662 18.1976 16.1877 17.4119 15.4021Z" fill="#92929D"/>
+                </svg>
+                <input placeholder="Search by route ID" id="search-input" name="text" type="text">
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <th>Route ID</th>
+                                <th>Start address</th>
+                                <th>End address</th>
+                                <th>Workload index</th>
+                                <th>Usage index</th>
+                                <th>Start date</th>
+                                <th>End date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{id}</td>
+                                <td>{route_id}</td>
+                                <td>{start_address}</td>
+                                <td>{end_address}</td>
+                                <td>{workload_index}</td>
+                                <td>{usage_index}</td>
+                                <td>{start_date}</td>
+                                <td>{end_date}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-overview">
+            Testing 2
+        </div>
+
+        <div class="content-csv">
+            Testing 3
+        </div>
+    </div>
+        
+</body>
+
+<script>
+    var btn_first = document.querySelectorAll(".menu-first")[0]
+
+</script>
+</html>

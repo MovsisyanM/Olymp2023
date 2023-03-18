@@ -1,5 +1,6 @@
 package com.epam.olympiad.transportation.controller;
 
+import com.epam.olympiad.transportation.service.RouteService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import com.epam.olympiad.transportation.model.RouteRequest;
 import com.epam.olympiad.transportation.model.RouteResponse;
@@ -15,6 +16,13 @@ import java.util.Map;
 @RestController
 public class RouteController {
 
+  private final RouteService service;
+
+  public RouteController(RouteService service) {
+    this.service = service;
+  }
+
+
   @RequestMapping(method = RequestMethod.GET, value = "/api/routes")
   @ApiImplicitParams({
     @ApiImplicitParam(name = "start_at", value = "Filter by first stops,  only 'equals' operation is applicable", required = false, dataType = "string", paramType = "query"),
@@ -26,8 +34,8 @@ public class RouteController {
   })
   @ApiOperation(value = "Retrieves a list of all routes from the database.")
   @CrossOrigin
-  public ResponseEntity<Page<RouteResponse>> listRoute(@RequestBody Map<String, String> requestParameters) {
-    throw new UnsupportedOperationException();
+  public ResponseEntity<Page<RouteResponse>> listRoute(@RequestParam Map<String, String> requestParameters) {
+    return service.getList(null);
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/api/routes/{id}")

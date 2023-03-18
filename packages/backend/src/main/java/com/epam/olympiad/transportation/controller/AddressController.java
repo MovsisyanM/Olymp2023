@@ -1,5 +1,6 @@
 package com.epam.olympiad.transportation.controller;
 
+import com.epam.olympiad.transportation.service.AddressService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import com.epam.olympiad.transportation.model.AddressRequest;
 import com.epam.olympiad.transportation.model.AddressResponse;
@@ -17,6 +18,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class AddressController {
+
+  private final AddressService service;
+
+  public AddressController(AddressService service) {
+    this.service = service;
+  }
 
   @RequestMapping(method = RequestMethod.GET, value = "/addresses")
   @ApiImplicitParams({

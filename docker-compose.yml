@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: packages/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    expose:
+      - 8080
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/transportation
+      SPRING_DATASOURCE_USERNAME: transportation
+      SPRING_DATASOURCE_PASSWORD: transportationpwd
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run serve:dev
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    volumes:
+      - ./packages/frontend/src:/app/packages/frontend/src
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: transportation
+      MYSQL_USER: transportation
+      MYSQL_PASSWORD: transportationpwd
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
